@@ -24,7 +24,7 @@ pub fn main() -> iced::Result {
 }
 
 struct Model {
-    data_state: dynamic_data::State<Entry, DummyEntryLoader>,
+    dynamic_data: dynamic_data::DynamicData<Entry, DummyEntryLoader>,
     next_button: button::State,
     previous_button: button::State,
     scrollable_state: iced::scrollable::State,
@@ -39,7 +39,7 @@ impl iced::Sandbox for Model {
 
     fn new() -> Self {
         Model {
-            data_state: dynamic_data::State::new(DummyEntryLoader {}).capacity(100),
+            dynamic_data: dynamic_data::DynamicData::new(DummyEntryLoader {}).capacity(100),
             scrollable_state: iced::scrollable::State::new(),
             previous_button: button::State::new(),
             next_button: button::State::new(),
@@ -48,21 +48,18 @@ impl iced::Sandbox for Model {
 
     fn update(&mut self, message: Message) {
         match message {
-            Message::Previous(n) => self.data_state.fetch_previous(n),
-            Message::Next(n) => self.data_state.fetch_next(n),
+            Message::Previous(n) => self.dynamic_data.fetch_previous(n),
+            Message::Next(n) => self.dynamic_data.fetch_next(n),
         }
     }
 
     fn view(&mut self) -> Element<Message, Renderer<Backend>> {
-        let dd = dynamic_data::DynamicData {
-            state: &mut self.data_state
-        };
 
         // This is where you choose how you want to display your data. Here it is a column with
         // text widgets, but it could be a canvas, a row, one of your own widgets, anything you
         // want.
         let data_column: Column<Message> =
-            dd.state.data().into_iter().fold(Column::new(), |col, i| {
+            self.dynamic_data.data().into_iter().fold(Column::new(), |col, i| {
                 col.push(iced::Text::new(i.0.to_string()))
             });
 

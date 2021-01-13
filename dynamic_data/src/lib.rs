@@ -7,11 +7,8 @@ pub trait DataLoader<T> {
     fn get_next_n(&self, n: isize, from: isize) -> Vec<T>;
     fn get_previous_n(&self, n: isize, from: isize) -> Vec<T>;
 }
-pub struct DynamicData<'a, T, D: DataLoader<T>> {
-    pub state: &'a mut State<T, D>,
-}
 
-pub struct State<T, D>
+pub struct DynamicData<T, D>
 where
     D: DataLoader<T>,
 {
@@ -21,9 +18,9 @@ where
     data: Vec<T>,
 }
 
-impl<T, D: DataLoader<T>> State<T, D> {
+impl<T, D: DataLoader<T>> DynamicData<T, D> {
     pub fn new(data_source: D) -> Self {
-        State {
+        DynamicData {
             current_start: 0,
             capacity: 40,
             data_source,
