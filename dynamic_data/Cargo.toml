@@ -1,0 +1,13 @@
+[package]
+name = "dynamic_data"
+version = "0.1.0"
+authors = ["GTimothy <22472919+GTimothy@users.noreply.github.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+iced = "0.2.0"
+iced_native = "0.3.0"
+iced_graphics = "0.1.0"
+iced_wgpu = "0.3.0"
